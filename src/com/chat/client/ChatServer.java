@@ -4,17 +4,23 @@ import java.io.IOException;
 import java.net.*;
 
 public class ChatServer {
-
+    private static boolean started = false;
 	public static void main(String[] args) {
        try {
     	   ServerSocket ss = new ServerSocket(8888);
-    	   while(true){
+    	   started = true;
+    	   while(started){
+		       boolean bconnected = false;
     		   Socket s  = ss.accept();
 		       System.out.println("a client connected");
+		       bconnected = true;
 		       DataInputStream dis = new DataInputStream(s.getInputStream());
-		       String str = dis.readUTF();
-		       System.out.println(str);
-		       dis.close();
+		       while(bconnected){
+			       String str = dis.readUTF();
+			       System.out.println(str);
+
+		       }
+		    	dis.close();   
     	   }
     	   
 		} catch (IOException e) {

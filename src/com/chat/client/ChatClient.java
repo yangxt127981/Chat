@@ -29,6 +29,7 @@ public class ChatClient extends Frame{
 		this.addWindowListener(new WindowAdapter(){
 			@Override
 			public void windowClosing(WindowEvent arg0){
+				disconnect();
 				System.exit(0);
 			}
 		});
@@ -50,7 +51,20 @@ public class ChatClient extends Frame{
 		}
 	}
 	
-	
+	public void disconnect(){
+		try {
+			dos.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			s.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	private class TfListener implements ActionListener{
 
 		@Override
