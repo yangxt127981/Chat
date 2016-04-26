@@ -6,9 +6,9 @@ import java.net.*;
 
 public class ChatServer {
     private static boolean started = false;
-    static ServerSocket ss =null;
-    static Socket s = null;
-    static DataInputStream dis = null;
+    private static ServerSocket ss =null;
+    private static Socket s = null;
+    private static DataInputStream dis = null;
 	public static void main(String[] args) {
     
     	   try{
