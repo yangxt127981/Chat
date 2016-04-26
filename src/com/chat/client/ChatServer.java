@@ -5,12 +5,12 @@ import java.io.IOException;
 import java.net.*;
 
 public class ChatServer {
-    private static boolean started = false;
-    private static ServerSocket ss =null;
-    private static Socket s = null;
-    private static DataInputStream dis = null;
+   
 	public static void main(String[] args) {
-    
+		    boolean started = false;
+		    ServerSocket ss =null;
+		    Socket s = null;
+		    DataInputStream dis = null;
     	   try{
     	       ss = new ServerSocket(8888);
     	   }catch (BindException e){
