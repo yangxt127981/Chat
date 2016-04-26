@@ -1,5 +1,6 @@
 package com.chat.client;
 import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.*;
 
@@ -12,7 +13,9 @@ public class ChatServer {
     
     	   try{
     	       ss = new ServerSocket(8888);
-    	   }catch (IOException e){
+    	   }catch (BindException e){
+    		   	System.out.println("port is using.....");
+           }catch (IOException e){
     		   e.printStackTrace();
     	   }
     	   
@@ -23,15 +26,16 @@ public class ChatServer {
 	    		   s  = ss.accept();
 			       System.out.println("a client connected");
 			       bconnected = true;
-			        dis = new DataInputStream(s.getInputStream());
+			       dis = new DataInputStream(s.getInputStream());
 			       while(bconnected){
 				       String str = dis.readUTF();
 				       System.out.println(str);
 	
 			       }
-			    	dis.close();   
     	      }
-			} catch (Exception e) {
+			} catch(EOFException e){
+				System.out.println("client closed!");
+			}catch (Exception e) {
 				
 				//e.printStackTrace();
 				System.out.println("client close");
