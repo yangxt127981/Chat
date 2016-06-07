@@ -64,16 +64,17 @@ class Client implements Runnable{
 		}
    }
    public void send(String str){
-	   try {
-		   dos.writeUTF(str);
+		 try {
+			dos.writeUTF(str);
 		} catch (IOException e) {
-			e.printStackTrace();
+			clients.remove(this);
+			System.out.println("a client exit, removed from client list");
 		}
    }
    
    @Override
    public void run() {
-		try {
+	   try {
 	       while(bconnected){
 				String str = dis.readUTF();
 			    System.out.println(str);
@@ -86,11 +87,13 @@ class Client implements Runnable{
 //			    	c.send(str);
 //			    }
 		   } 
-		}catch (EOFException e) {
+		} catch (SocketException e){
 			System.out.println("client closed!");
-		}catch (IOException e) {
+		} catch (EOFException e) {
+			System.out.println("client closed!");
+		} catch (IOException e) {
 			e.printStackTrace();
-		}finally{
+		} finally{
 			try{
 				if(dis!=null)
 					dis.close();
@@ -98,9 +101,11 @@ class Client implements Runnable{
 				   s.close();
 				if(dos!=null)
 				   dos.close();
+				
 			}catch(IOException e1){
 				e1.printStackTrace();
 			}
+			
 		} 
 	 }
   }
