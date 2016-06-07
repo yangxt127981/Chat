@@ -9,7 +9,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.*;
 
-import com.chat.client.ChatServer.Client;
 public class ChatClient extends Frame{
    
 	private TextField tf = new TextField();
@@ -19,6 +18,7 @@ public class ChatClient extends Frame{
     private DataInputStream dis = null;
     private boolean bConnected = false;
     
+    Thread tRecv = new Thread(new RecvThread());
 	public static void main(String[] args) {
        new ChatClient().lanuchFrame();
        
@@ -46,7 +46,7 @@ public class ChatClient extends Frame{
 		this.setVisible(true);
 		
 		connect();
-		new Thread(new RecvThread()).start();
+		tRecv.start();
 	}
 	
 	public void connect(){
@@ -65,16 +65,26 @@ public class ChatClient extends Frame{
 	}
 	
 	public void disconnect(){
+//		try {
+//			bConnected = false;
+//			tRecv.join();
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		} finally{
+//			try {
+//				dos.close();
+//				dis.close();
+//				s.close();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//			
+//		}
 		try {
 			dos.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
+			dis.close();
 			s.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -99,10 +109,13 @@ public class ChatClient extends Frame{
     	   @Override
     	   public void run() {
     		try{   
-    		 while(bConnected){
+    		   while(bConnected){
     			 String str = dis.readUTF();
-    			 ta.setText(ta.getText()+str+'\n');
-    		 }
+    			 ta.setText(ta.getText() + str + '\n');
+    		   }
+    		} catch (SocketException e){
+    			System.out.println("exit");
+    			
     		} catch (IOException e){
     			e.printStackTrace();
     		}
